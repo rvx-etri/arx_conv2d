@@ -16,8 +16,10 @@
 ///////////////////////////////////////////////////////////////
 
 #define NUN_MATRIX 1
-#define INPUT_MATRIX_SIZE 8
-#define KERNEL_MATRIX_SIZE 3
+#define INPUT_MATRIX_SIZE_W 14
+#define INPUT_MATRIX_SIZE_H 12
+#define KERNEL_MATRIX_SIZE_W 3
+#define KERNEL_MATRIX_SIZE_H 3
 #define RESULT_CHECK 1
 
 #define MATRIX_DATATYPE MATRIX_DATATYPE_SINT32
@@ -41,8 +43,8 @@ int main()
     conv_option.value = 0;
     conv_option.br.rshift = 0;
 
-    input_info = matrix_alloc(MATRIX_DATATYPE, INPUT_MATRIX_SIZE, INPUT_MATRIX_SIZE, NULL);
-    kernel_info = matrix_alloc(MATRIX_DATATYPE, KERNEL_MATRIX_SIZE, KERNEL_MATRIX_SIZE, NULL);
+    input_info = matrix_alloc(MATRIX_DATATYPE, INPUT_MATRIX_SIZE_W, INPUT_MATRIX_SIZE_H, NULL);
+    kernel_info = matrix_alloc(MATRIX_DATATYPE, KERNEL_MATRIX_SIZE_W, KERNEL_MATRIX_SIZE_H, NULL);
     output_info = matrix_conv_alloc_output(input_info, kernel_info, conv_option.value);
     ref_info = matrix_conv_alloc_output(input_info, kernel_info, conv_option.value);
 
@@ -55,21 +57,21 @@ int main()
       mop_mapping->matrix_conv(mop_mapping, input_info, kernel_info, output_info, conv_option.value);
       
       // by hkim
-      // printf("Matrix Information\n ");
-      // matrix_print(input_info);
-      // matrix_print(kernel_info);
-      // matrix_print(output_info);
-      // matrix_print(ref_info);
+      // printf("\nMatrix Information\n ");
+      // printf("\n\nInput Matrix:"); matrix_print(input_info);
+      // printf("\n\nKernel Matrix:"); matrix_print(kernel_info);
+      // printf("\n\nRTL Output Matrix:"); matrix_print(output_info);
+      // printf("\n\nSW Output Matrix:"); matrix_print(ref_info);
       // 
       if(RESULT_CHECK)
       {
         int all_are_equal = matrix_compare(output_info, ref_info, 1);
         if(!all_are_equal)
         {
-          //matrix_print(input_info);
-          //matrix_print(kernel_info);
-          matrix_print(output_info);
-          matrix_print(ref_info);
+          //printf("\n\nInput Matrix:"); matrix_print(input_info);
+          //printf("\n\nKernel Matrix:"); matrix_print(kernel_info);
+          printf("\n\nRTL Output Matrix:"); matrix_print(output_info);
+          printf("\n\nSW Output Matrix:"); matrix_print(ref_info);
           assert(0);
           break;
         }

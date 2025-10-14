@@ -14,7 +14,6 @@ python3.bat
 **/work/**
 *.wlf
 **/imp*/**
-rvx_special_ip*
 
 rvx_util
 rvx_hwlib
